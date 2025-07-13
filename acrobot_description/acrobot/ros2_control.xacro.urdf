@@ -5,7 +5,7 @@
    <ros2_control name="acrobot_controller" type="system">
    
       <hardware>
-         <plugin>encoded_dc_motor_kit_hardware_interface/EncodedDcMotorKitHardwareInterface</plugin>
+         <plugin>acrobot_harddware_interface/AcrobotHardwareInterface</plugin>
       </hardware>
 
       <joint name="continuous_revolute_1">

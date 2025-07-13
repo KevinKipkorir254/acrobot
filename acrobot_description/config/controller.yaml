@@ -1,0 +1,15 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz 100 was too little to test for rise time at about 0.036 s
+
+    effort_controller:
+      type: effort_controllers/JointGroupEffortController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+effort_controller:
+  ros__parameters:
+    joints:
+      - continuous_revolute_1   # Joint name
+      - continuous_revolute_2

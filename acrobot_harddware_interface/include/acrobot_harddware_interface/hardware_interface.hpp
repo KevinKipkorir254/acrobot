@@ -16,13 +16,13 @@ namespace acrobot_harddware_interface
 {
     using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
-    class AcrobotHardwarenterface : public hardware_interface::SystemInterface
+    class AcrobotHardwareInterface : public hardware_interface::SystemInterface
     {
         public:
-            AcrobotHardwarenterface();
+            AcrobotHardwareInterface();
 
             // Destructor
-            virtual ~AcrobotHardwarenterface();
+            virtual ~AcrobotHardwareInterface();
 
            
             // Implementing rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface

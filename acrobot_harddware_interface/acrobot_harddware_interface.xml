@@ -1,6 +1,6 @@
 <library path= "acrobot_harddware_interface">
-    <class name = "acrobot_harddware_interface/AcrobotHardwarenterface"
-           type = "acrobot_harddware_interface::AcrobotHardwarenterface"
+    <class name = "acrobot_harddware_interface/AcrobotHardwareInterface"
+           type = "acrobot_harddware_interface::AcrobotHardwareInterface"
            base_class = "hardware_interface/SystemInterface"
            base_class_type = "hardware_interface::SystemInterface">
     </class>

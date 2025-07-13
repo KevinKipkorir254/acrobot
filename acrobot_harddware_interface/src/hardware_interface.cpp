@@ -13,12 +13,12 @@
 
 namespace acrobot_harddware_interface
 {
-  AcrobotHardwarenterface::AcrobotHardwarenterface()
+  AcrobotHardwareInterface::AcrobotHardwareInterface()
   {
-    RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwarenterface"), "In constructor...............");
+    RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "In constructor...............");
   }
 
-  AcrobotHardwarenterface::~AcrobotHardwarenterface()
+  AcrobotHardwareInterface::~AcrobotHardwareInterface()
   {
     if (serial_port_.IsOpen())
     {
@@ -27,9 +27,9 @@ namespace acrobot_harddware_interface
     }
   }
 
-  CallbackReturn AcrobotHardwarenterface::on_init(const hardware_interface::HardwareInfo &hardware_info)
+  CallbackReturn AcrobotHardwareInterface::on_init(const hardware_interface::HardwareInfo &hardware_info)
   {
-    RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwarenterface"), "In on init...............");
+    RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "In on init...............");
 
     // Initialize your hardware interface here
     CallbackReturn result = hardware_interface::SystemInterface::on_init(hardware_info);
@@ -41,7 +41,7 @@ namespace acrobot_harddware_interface
     // Print out all joints and set initial values to zero
     for (const auto &joint : info_.joints)
     {
-      RCLCPP_INFO_STREAM(rclcpp::get_logger("AcrobotHardwarenterface"),
+      RCLCPP_INFO_STREAM(rclcpp::get_logger("AcrobotHardwareInterface"),
                          "Joint name: " << joint.name);
     }
 
@@ -75,7 +75,7 @@ namespace acrobot_harddware_interface
     return CallbackReturn::SUCCESS;
   }
 
-  std::vector<hardware_interface::StateInterface> AcrobotHardwarenterface::export_state_interfaces()
+  std::vector<hardware_interface::StateInterface> AcrobotHardwareInterface::export_state_interfaces()
   {
     std::vector<hardware_interface::StateInterface> state_interfaces;
 
@@ -89,7 +89,7 @@ namespace acrobot_harddware_interface
     return state_interfaces;
   }
 
-  std::vector<hardware_interface::CommandInterface> AcrobotHardwarenterface::export_command_interfaces()
+  std::vector<hardware_interface::CommandInterface> AcrobotHardwareInterface::export_command_interfaces()
   {
     std::vector<hardware_interface::CommandInterface> command_interfaces;
 
@@ -101,22 +101,22 @@ namespace acrobot_harddware_interface
     return command_interfaces;
   }
 
-  CallbackReturn AcrobotHardwarenterface::on_activate(const rclcpp_lifecycle::State &previous_state)
+  CallbackReturn AcrobotHardwareInterface::on_activate(const rclcpp_lifecycle::State &previous_state)
   {
-    //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwarenterface"), "Starting robot hardware ...");
+    //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "Starting robot hardware ...");
 
     velocity_state.assign(info_.joints.size(), 0.0);
 
     return CallbackReturn::SUCCESS;
   }
 
-  CallbackReturn AcrobotHardwarenterface::on_deactivate(const rclcpp_lifecycle::State &previous_state)
+  CallbackReturn AcrobotHardwareInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state)
   {
 
     return CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::return_type AcrobotHardwarenterface::read(const rclcpp::Time &time,
+  hardware_interface::return_type AcrobotHardwareInterface::read(const rclcpp::Time &time,
                                                                            const rclcpp::Duration &period)
   {
 
@@ -128,7 +128,7 @@ namespace acrobot_harddware_interface
 
     if (!(sweet == 1))
     {
-      RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwarenterface"), "Data read failed");
+      RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "Data read failed");
     }
     else
     {
@@ -138,7 +138,7 @@ namespace acrobot_harddware_interface
 
       // Combine them into a signed 16-bit integer
       signed_data = (int16_t)((high_byte << 8) | low_byte);
-      //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwarenterface"), GREEN_TEXT ": %d" RESET_COLOR, signed_data);
+      //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), GREEN_TEXT ": %d" RESET_COLOR, signed_data);
       
       //spli data_output_optical into two bytes
       high_byte = (data_output_optical >> 8) & 0xFF;
@@ -160,26 +160,34 @@ namespace acrobot_harddware_interface
 
     if ((velocity < 20.0) && (velocity > -20.0))
     {
-      position_state[0] = position;
-      velocity_state[0] = velocity;
+      //position_state[0] = position;
+      //velocity_state[0] = velocity;
+      position_state.push_back(position);
+      velocity_state.push_back(velocity);
 
-      position_state_optical[0] = position_optical;
-      velocity_state_optical[1] = velocity_optical;
+      //position_state_optical[1] = position_optical;
+      //velocity_state_optical[1] = velocity_optical;      
+      position_state.push_back(position_optical);
+      velocity_state.push_back(velocity_optical);
     }
     else //state remains the same
     {
-      position_state[0] = position_state[0];
-      velocity_state[0] = velocity_state[0];
+      //position_state[0] = position_state[0];
+      //velocity_state[0] = velocity_state[0];
+      position_state.push_back(position);
+      velocity_state.push_back(velocity);
 
-      position_state[1] = position_state_optical[0];
-      velocity_state[1] = velocity_state_optical[0];
+      //position_state[1] = position_state_optical[1];
+      //velocity_state[1] = velocity_state_optical[1];   
+      position_state.push_back(position_optical);
+      velocity_state.push_back(velocity_optical);
     }
 
     return hardware_interface::return_type::OK;
   }
 
   // Send the desired joint position, servoangles
-  hardware_interface::return_type AcrobotHardwarenterface::write(const rclcpp::Time &time,
+  hardware_interface::return_type AcrobotHardwareInterface::write(const rclcpp::Time &time,
                                                                             const rclcpp::Duration &period)
   {
     int data_output_sting = (int)effort_command[0];
@@ -205,11 +213,11 @@ namespace acrobot_harddware_interface
 
     if (!(sweet == 1))
     {
-      RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwarenterface"), "Data write failed");
+      RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "Data write failed");
     }
     else
     {
-      //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwarenterface"), BLUE_TEXT ": %d" RESET_COLOR, data_output_sting);
+      //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), BLUE_TEXT ": %d" RESET_COLOR, data_output_sting);
     }
 
     return hardware_interface::return_type::OK;
@@ -217,4 +225,4 @@ namespace acrobot_harddware_interface
 
 } // namespace robotic_arm_hwinterface
 
-PLUGINLIB_EXPORT_CLASS(acrobot_harddware_interface::AcrobotHardwarenterface, hardware_interface::SystemInterface)
+PLUGINLIB_EXPORT_CLASS(acrobot_harddware_interface::AcrobotHardwareInterface, hardware_interface::SystemInterface)

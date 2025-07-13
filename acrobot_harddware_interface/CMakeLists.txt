@@ -20,7 +20,7 @@ pkg_check_modules(SERIAL REQUIRED libserial)
 
 # Add the plugin XML to the install
 install(FILES
-    encoded_dc_motor_kit_hardware_interface.xml
+    acrobot_harddware_interface.xml
     DESTINATION share/${PROJECT_NAME}/
 )
 
@@ -49,7 +49,7 @@ ament_target_dependencies(${PROJECT_NAME}
   hardware_interface
 )
 
-pluginlib_export_plugin_description_file(hardware_interface encoded_dc_motor_kit_hardware_interface.xml)
+pluginlib_export_plugin_description_file(hardware_interface acrobot_harddware_interface.xml)
 
 ament_python_install_package(${PROJECT_NAME})
 

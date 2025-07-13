@@ -2,6 +2,8 @@
 <!-- Generated using onshape-to-robot -->
 <!-- Onshape https://cad.onshape.com/documents/15632817fe6b72c0f56c3732/w/d629893b8f606dc1210bd639/e/7e02c595df6ca021d423e32c -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="acrobot">
+
+
   <!-- Link part_1 -->
   <link name="part_1">
     <inertial>
@@ -122,4 +124,27 @@
     <axis xyz="0 0 1"/>
     <limit effort="10" velocity="10"/>
   </joint>
+   
+   <ros2_control name="acrobot_controller" type="system">
+   
+      <hardware>
+         <plugin>acrobot_harddware_interface/AcrobotHardwareInterface</plugin>
+      </hardware>
+
+      <joint name="continuous_revolute_1">
+         <state_interface name="position"/>
+         <state_interface name="velocity"/>
+         <state_interface name="acceleration"/>
+         <command_interface name="effort"/> <!-- Add command interface -->
+      </joint>
+
+      <joint name="continuous_revolute_2">
+         <state_interface name="position"/>
+         <state_interface name="velocity"/>
+         <state_interface name="acceleration"/>
+      </joint>
+
+   </ros2_control>
+
+
 </robot>
