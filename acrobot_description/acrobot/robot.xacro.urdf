@@ -1,7 +1,7 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated using onshape-to-robot -->
 <!-- Onshape https://cad.onshape.com/documents/15632817fe6b72c0f56c3732/w/d629893b8f606dc1210bd639/e/7e02c595df6ca021d423e32c -->
-<robot name="acrobot">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="acrobot">
   <!-- Link part_1 -->
   <link name="part_1">
     <inertial>
