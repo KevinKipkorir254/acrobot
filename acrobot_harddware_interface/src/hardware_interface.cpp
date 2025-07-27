@@ -58,8 +58,8 @@ namespace acrobot_harddware_interface
 
     try
     {
-      serial_port_.Open("/dev/ttyUSB0");
-      serial_port_.SetBaudRate(LibSerial::BaudRate::BAUD_230400);
+      serial_port_.Open("/dev/ttyACM0");
+      serial_port_.SetBaudRate(LibSerial::BaudRate::BAUD_115200);
       serial_port_.SetCharacterSize(LibSerial::CharacterSize::CHAR_SIZE_8);
       serial_port_.SetParity(LibSerial::Parity::PARITY_NONE);
       serial_port_.SetStopBits(LibSerial::StopBits::STOP_BITS_1);
@@ -123,7 +123,7 @@ namespace acrobot_harddware_interface
     uint16_t data_output = 0;
     uint16_t data_output_optical = 0;
     int16_t signed_data;
-    uint16_t signed_data_optical;
+    int16_t signed_data_optical;
     int sweet = read_data_data(&data_output, &data_output_optical, &serial_port_);
 
     if (!(sweet == 1))
@@ -145,7 +145,7 @@ namespace acrobot_harddware_interface
       low_byte = data_output_optical & 0xFF;
 
       //combine them into one single 16-bit integer
-      signed_data_optical = (uint16_t)((high_byte << 8) | low_byte);
+      signed_data_optical = (int16_t)((high_byte << 8) | low_byte);
     }
 
     double position = (((double)signed_data) / 500)* 2 * M_PI; //convert to radians
