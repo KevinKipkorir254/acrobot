@@ -44,7 +44,7 @@ def generate_launch_description():
         arguments=[urdf_file],
     )
 
-    config_file_path = os.path.join( get_package_share_directory('acrobot_description'), 'config','controller.yaml')
+    config_file_path = os.path.join( get_package_share_directory('acrobot_description'), 'config','controller.yaml') #controller.yaml
     rviz_config = os.path.join(get_package_share_directory(package_name), "rviz", "acrobot.rviz")
 
     controller_manager = Node(
@@ -83,6 +83,7 @@ def generate_launch_description():
         controller_manager,
         joint_state_broadcaster_spawner,
         effort_controller_spawner,
+        rviz2_node,
         OpaqueFunction(function=launch_gui_nodes),
         
     ])

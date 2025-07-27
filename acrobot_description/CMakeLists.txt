@@ -28,6 +28,7 @@ install(
     rviz
     launch
     acrobot
+    config
   DESTINATION
     share/${PROJECT_NAME}/
     

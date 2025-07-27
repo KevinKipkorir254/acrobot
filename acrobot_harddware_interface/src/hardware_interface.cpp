@@ -65,7 +65,7 @@ namespace acrobot_harddware_interface
       serial_port_.SetStopBits(LibSerial::StopBits::STOP_BITS_1);
       serial_port_.SetFlowControl(LibSerial::FlowControl::FLOW_CONTROL_NONE);
 
-      //RCLCPP_INFO_STREAM(rclcpp::get_logger("hardware_interface_node"), "Serial Port initialized successfully.");
+      RCLCPP_INFO_STREAM(rclcpp::get_logger("hardware_interface_node"), "Serial Port initialized successfully.");
     }
     catch (const std::exception &e)
     {
@@ -160,27 +160,31 @@ namespace acrobot_harddware_interface
 
     if ((velocity < 20.0) && (velocity > -20.0))
     {
-      //position_state[0] = position;
-      //velocity_state[0] = velocity;
-      position_state.push_back(position);
-      velocity_state.push_back(velocity);
+      position_state[0] = position;
+      velocity_state[0] = velocity;
+      //position_state.push_back(position);
+      //velocity_state.push_back(velocity);
+      //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "Data read: %.2f, %.2f", position_state[0], velocity_state[0]);
 
-      //position_state_optical[1] = position_optical;
-      //velocity_state_optical[1] = velocity_optical;      
-      position_state.push_back(position_optical);
-      velocity_state.push_back(velocity_optical);
+      position_state[1] = position_optical;
+      velocity_state[1] = velocity_optical;
+      //position_state.push_back(position_optical);
+      //velocity_state.push_back(velocity_optical);
+      //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "Data optical read: %.2f, %.2f", position_state[1], velocity_state[1]);
     }
     else //state remains the same
     {
-      //position_state[0] = position_state[0];
-      //velocity_state[0] = velocity_state[0];
-      position_state.push_back(position);
-      velocity_state.push_back(velocity);
+      position_state[0] = position_state[0];
+      velocity_state[0] = velocity_state[0];
+      //position_state.push_back(position);
+      //velocity_state.push_back(velocity);
+      RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "Data read failed");
 
-      //position_state[1] = position_state_optical[1];
-      //velocity_state[1] = velocity_state_optical[1];   
-      position_state.push_back(position_optical);
-      velocity_state.push_back(velocity_optical);
+      position_state[1] = position_state[1];
+      velocity_state[1] = velocity_state[1];   
+      //position_state.push_back(position_optical);
+      //velocity_state.push_back(velocity_optical);
+      RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), "Data read failed");
     }
 
     return hardware_interface::return_type::OK;
@@ -190,6 +194,7 @@ namespace acrobot_harddware_interface
   hardware_interface::return_type AcrobotHardwareInterface::write(const rclcpp::Time &time,
                                                                             const rclcpp::Duration &period)
   {
+/*
     int data_output_sting = (int)effort_command[0];
     // int data_output_sting = 0;
 
@@ -219,7 +224,7 @@ namespace acrobot_harddware_interface
     {
       //RCLCPP_INFO(rclcpp::get_logger("AcrobotHardwareInterface"), BLUE_TEXT ": %d" RESET_COLOR, data_output_sting);
     }
-
+*/
     return hardware_interface::return_type::OK;
   }
 

@@ -39,7 +39,7 @@ int read_data_data(uint16_t* read_output, uint16_t* read_optical_output, LibSeri
             catch(const LibSerial::SerialPort& e)
             {
                 
-                RCLCPP_INFO(rclcpp::get_logger("PORT READ"), "Data not sent");
+                RCLCPP_INFO(rclcpp::get_logger("PORT READ"), "Start byte not sent");
                 exit(1);
 
             }
@@ -62,7 +62,7 @@ int read_data_data(uint16_t* read_output, uint16_t* read_optical_output, LibSeri
                  i++;
                  if(i > 100)
                  {
-                   RCLCPP_INFO(rclcpp::get_logger("PORT READ"), "FAILED WAIT");
+                   RCLCPP_INFO(rclcpp::get_logger("Read acknowledge byte READ"), "FAILED WAIT");
                    return -1;
                  }
              }
